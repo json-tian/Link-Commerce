@@ -13,7 +13,6 @@ function getApiData() {
 function App() {
   const [products, setProducts] = useState([]);
 
-
   useEffect(() => {
     function getData() {
       getApiData().then((products) => {
