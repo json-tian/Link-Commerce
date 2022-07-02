@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getApiData } from "../../utils/controller";
+import React from "react";
 
 function Admin() {
   let { shop } = useParams();

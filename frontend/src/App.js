@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Shop from "./components/shop/Shop";
 import Admin from "./components/admin/Admin";
+import React from "react";
 
 function App() {
   return (

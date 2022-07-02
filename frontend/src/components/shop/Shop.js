@@ -3,6 +3,7 @@ import Product from "./Product";
 import { useParams } from "react-router-dom";
 import { getApiData } from "../../utils/controller";
 import NotFound from "../../NotFound";
+import React from "react";
 
 function Shop() {
   let { shop } = useParams();
