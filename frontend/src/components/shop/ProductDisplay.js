@@ -1,23 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:3000/api/v1/products";
-
-function getApiData() {
-  return axios.get(API_URL).then((response) => response.data);
-}
-
-function Products() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    function getData() {
-      getApiData().then((products) => {
-        setProducts(products);
-      });
-    }
-    return getData();
-  }, []);
+function Products({products}) {
 
   return (
     <div>
