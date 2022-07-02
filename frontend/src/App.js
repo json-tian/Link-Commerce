@@ -1,31 +1,24 @@
 import logo from "./logo.svg";
 import "./App.css";
-import axios from "axios";
-import Products from "./components/Products";
-import { useEffect, useState } from "react";
-
-const API_URL = "http://localhost:3000/api/v1/products";
-
-function getApiData() {
-  return axios.get(API_URL).then((response) => response.data);
-}
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Shop from "./components/shop/Shop";
+import Admin from "./components/admin/Admin";
 
 function App() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    function getData() {
-      getApiData().then((products) => {
-        setProducts(products)
-      })
-    }
-    return getData();
-  }, [])
-
-  return <div className="App">
-    <h1>Here are the products: </h1>
-    <Products products={products}></Products>
-  </div>;
+  return (
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<p>Home page</p>} />
+        <Route exact path="/:shop" element={<Shop />} />
+        <Route exact path="/:shop/admin" element={<Admin />} />
+        <Route path="*" element={<p>Page not found</p>} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
