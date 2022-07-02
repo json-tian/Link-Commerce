@@ -7,6 +7,7 @@ import {
 import Shop from "./components/shop/Shop";
 import Admin from "./components/admin/Admin";
 import React from "react";
+import '@shopify/polaris/build/esm/styles.css';
 
 function App() {
   return (

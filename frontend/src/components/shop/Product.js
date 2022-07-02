@@ -1,12 +1,11 @@
 import React from "react";
+import { Card } from "@shopify/polaris";
 
-function Product({product}) {
-
+function Product({ product }) {
   return (
-    <div key={product.id}>
-    <h2>Title: {product.title}</h2>
-    <h2>description: {product.description}</h2>
-  </div>
+    <Card sectioned title={product.title}>
+      <p>{product.description}</p>
+    </Card>
   );
 }
 

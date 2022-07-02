@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Product from "./Product";
 import { useParams } from "react-router-dom";
 import { getApiData } from "../../utils/controller";
 import NotFound from "../../NotFound";
 import React from "react";
+import { DisplayText, Frame, Layout, Page, Stack } from "@shopify/polaris";
 
 function Shop() {
   let { shop } = useParams();
@@ -29,13 +30,20 @@ function Shop() {
   }, [shopData]);
 
   return shopData !== {} ? (
-    <div>
-      <h2>Welcome to {shop}</h2>
-      <h1>Product List</h1>
-      {products.map((product) => {
-        return <Product product={product} />;
-      })}
-    </div>
+    <Frame>
+      <Page title={shopData.name}>
+        <Layout>
+          <Layout.Section>
+            <Stack vertical>
+              <DisplayText size="extraLarge">Products</DisplayText>
+              {products.map((product) => {
+                return <Product product={product} />;
+              })}
+            </Stack>
+          </Layout.Section>
+        </Layout>
+      </Page>
+    </Frame>
   ) : (
     <NotFound />
   );
