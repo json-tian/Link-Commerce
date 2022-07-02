@@ -3,7 +3,7 @@ class Api::V1::ShopsController < ApplicationController
 
   # GET /shops
   def index
-    @shops = Shop.all
+    @shops = Shop.where(shop_params)
 
     render json: @shops
   end
@@ -46,6 +46,6 @@ class Api::V1::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.require(:shop).permit(:title, :description)
+      params.permit(:shop, :title, :description, :subpage)
     end
 end
