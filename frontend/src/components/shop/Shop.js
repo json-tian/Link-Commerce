@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Products from "./ProductDisplay";
+import Product from "./Product";
 import { useParams } from "react-router-dom";
 import { getApiData } from "../../utils/controller";
 import NotFound from "../../NotFound";
@@ -11,20 +11,29 @@ function Shop() {
 
   useEffect(() => {
     function getData() {
-      getApiData("shops/" + shop).then((shopData) => {
-        setShopData(shopData);
-      });
-      getApiData("shops/" + shop + "/products").then((products) => {
-        setProducts(products);
+      getApiData("shops/?subpage=" + shop).then((shopData) => {
+        setShopData(shopData[0]);
       });
     }
     return getData();
   }, [shop]);
 
-  return shopData ? (
+  useEffect(() => {
+    function getData() {
+      getApiData("shops/" + shopData.id + "/products").then((products) => {
+        setProducts(products);
+      });
+    }
+    return getData();
+  }, [shopData]);
+
+  return shopData !== {} ? (
     <div>
       <h2>Welcome to {shop}</h2>
-      <Products products={products} />
+      <h1>Product List</h1>
+      {products.map((product) => {
+        return <Product product={product} />;
+      })}
     </div>
   ) : (
     <NotFound />
