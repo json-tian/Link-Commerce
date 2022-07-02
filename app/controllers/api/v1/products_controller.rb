@@ -3,7 +3,7 @@ class Api::V1::ProductsController < ApplicationController
 
   # GET /products
   def index
-    @products = Product.all
+    @products = Product.where(shop_id: params[:shop_id])
 
     render json: @products
   end
