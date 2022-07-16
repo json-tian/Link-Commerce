@@ -18,7 +18,7 @@ class Api::V1::ShopsController < ApplicationController
     @shop = Shop.new(shop_params)
 
     if @shop.save
-      render json: @shop, status: :created, location: @shop
+      render json: @shop, status: :created, location: api_v1_shop_url(@shop)
     else
       render json: @shop.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class Api::V1::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.permit(:shop, :title, :description, :subpage)
+      params.permit(:shop, :name, :description, :background, :subpage)
     end
 end
