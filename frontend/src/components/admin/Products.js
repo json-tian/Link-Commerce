@@ -14,7 +14,7 @@ export function Products(props) {
             <Product
               key={product.id}
               product={product}
-              deleteThisProduct={() => deleteItem("products/" + product.id)}
+              deleteThisProduct={() => deleteItem("shops/" + product.shop_id + "/products/" + product.id)}
             />
           );
         })
