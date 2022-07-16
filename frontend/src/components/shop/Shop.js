@@ -37,11 +37,12 @@ function Shop() {
             <Stack vertical>
               <DisplayText size="extraLarge">Products</DisplayText>
               {products.map((product) => {
-                return <Product product={product} />;
+                return <Product key={product.id} product={product} />;
               })}
             </Stack>
           </Layout.Section>
         </Layout>
+        <a href={"/" + shopData.subpage + "/admin"}>View the Shop's Admin Page</a>
       </Page>
     </Frame>
   ) : (
