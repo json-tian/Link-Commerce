@@ -1,14 +1,26 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { deleteApiData, getApiData } from "../../utils/controller";
 import React from "react";
 import { Products } from "./Products";
-import { DisplayText, Page } from "@shopify/polaris";
+import { DisplayText, Page, PageActions, TextField } from "@shopify/polaris";
 
 function Admin() {
   let { shop } = useParams();
   const [shopData, setShopData] = useState({});
   const [products, setProducts] = useState([]);
+
+  // const [value, setValue] = useState("");
+  console.log("hello");
+  const [shopName, setShopName] = useState("");
+  const [shopDescription, setShopDescription] = useState("");
+  const [shopSubpage, setShopSubpage] = useState("");
+  // const [shopName, setShopName] = useState(shopData.name);
+  // const [shopDescription, setShopDescription] = useState(shopData.description);
+  // const [shopSubpage, setShopSubpage] = useState(shopData.subpage);
+
+  // const handleDetailsChange = useCallback((newValue) => setValue(newValue), []);
+  const handleDetailsChange = (setValue) => useCallback((newValue) => setValue(newValue), []);
 
   useEffect(() => {
     function getData() {
@@ -37,13 +49,48 @@ function Admin() {
     >
       <DisplayText size="extraLarge">Welcome to the Admin Page</DisplayText>
       <DisplayText size="large">Store Details:</DisplayText>
-      {/* <h2>Welcome to the Admin page</h2> */}
+      <TextField
+        label="Shop Name"
+        value={shopName}
+        // value={shopData.name}
+        onChange={handleDetailsChange(setShopName)}
+        // onChange={handleDetailsChange}
+        autoComplete="off"
+      />
+      <TextField
+        label="Shop Description"
+        value={shopDescription}
+        // value={shopData.description}
+        onChange={handleDetailsChange(setShopDescription)}
+        // onChange={handleDetailsChange}
+        autoComplete="off"
+      />
+      <TextField
+        label="Shop Subpage"
+        value={shopSubpage}
+        // value={shopData.subpage}
+        onChange={handleDetailsChange(setShopSubpage)}
+        // onChange={handleDetailsChange}
+        autoComplete="off"
+      />
       {/* <h3>Shop Name: {shopData.name}</h3>
       <h3>Description: {shopData.description}</h3>
       <h3>Subpage: {shopData.subpage}</h3> */}
       <DisplayText size="large">Products in your store:</DisplayText>
       <Products products={products} deleteItem={deleteApiData} />
-      <a href={"/" + shopData.subpage}>View the Shop</a>
+      
+      <PageActions
+      primaryAction={{
+        content: "Save Changes",
+      }}
+      secondaryActions={[
+        {
+          content: "Discard Changes",
+          destructive: true,
+        },
+      ]}
+    />
+    <a href={"/" + shopData.subpage}>View the Shop</a>
     </Page>
   );
 }

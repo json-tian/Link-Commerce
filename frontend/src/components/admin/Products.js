@@ -10,10 +10,13 @@ export function Products(props) {
         <h2>No products added yet, try adding some.</h2>
       ) : (
         products.map((product) => {
-           return <Product
-            key={product.id}
-            product={product}
-            deleteThisProduct={() => deleteItem("products/" + product.id)}/>;
+          return (
+            <Product
+              key={product.id}
+              product={product}
+              deleteThisProduct={() => deleteItem("products/" + product.id)}
+            />
+          );
         })
       )}
     </div>
