@@ -4,7 +4,15 @@ import { useParams } from "react-router-dom";
 import { getApiData } from "../../utils/controller";
 import NotFound from "../../NotFound";
 import React from "react";
-import { DisplayText, Frame, Layout, Page, Stack } from "@shopify/polaris";
+import {
+  Button,
+  DisplayText,
+  Frame,
+  Layout,
+  Link,
+  Page,
+  Stack,
+} from "@shopify/polaris";
 
 function Shop() {
   let { shop } = useParams();
@@ -31,13 +39,20 @@ function Shop() {
 
   return shopData !== {} ? (
     <Frame>
-      <Page title={shopData.name}>
+      <Page
+        title={shopData.name}
+        secondaryActions={
+          <Button url={"/" + shopData.subpage + "/admin"}>
+            Edit Store Details...
+          </Button>
+        }
+      >
         <Layout>
           <Layout.Section>
             <Stack vertical>
               <DisplayText size="extraLarge">Products</DisplayText>
               {products.map((product) => {
-                return <Product product={product} />;
+                return <Product key={product.id} product={product} />;
               })}
             </Stack>
           </Layout.Section>
