@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getApiData } from "../../utils/controller";
 import React from "react";
-import { Page } from "@shopify/polaris";
+import Product from "./Product";
+import { DisplayText, Page } from "@shopify/polaris";
 
 function Admin() {
   let { shop } = useParams();
@@ -28,11 +29,22 @@ function Admin() {
   }, [shopData]);
 
   return (
-    <Page title="Welcome to your admin page">
-      <h2>Welcome to the Admin page</h2>
-      <h3>Shop Name: {shopData.name}</h3>
+    <Page
+      breadcrumbs={[{ content: shopData.name, url: "/" + shopData.subpage }]}
+      title="Admin Page"
+      subtitle={shopData.name}
+      compactTitle
+    >
+      <DisplayText size="extraLarge">Welcome to the Admin Page</DisplayText>
+      <DisplayText size="large">Store Details:</DisplayText>
+      {/* <h2>Welcome to the Admin page</h2> */}
+      {/* <h3>Shop Name: {shopData.name}</h3>
       <h3>Description: {shopData.description}</h3>
-      <h3>Subpage: {shopData.subpage}</h3>
+      <h3>Subpage: {shopData.subpage}</h3> */}
+      <DisplayText size="large">Products in your store:</DisplayText>
+      {products.map((product) => {
+        return <Product key={product.id} product={product} />;
+      })}
       <a href={"/" + shopData.subpage}>View the Shop</a>
     </Page>
   );
