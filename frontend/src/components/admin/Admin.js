@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getApiData } from "../../utils/controller";
+import { deleteApiData, getApiData } from "../../utils/controller";
 import React from "react";
-import Product from "./Product";
+import { Products } from "./Products";
 import { DisplayText, Page } from "@shopify/polaris";
 
 function Admin() {
@@ -42,9 +42,7 @@ function Admin() {
       <h3>Description: {shopData.description}</h3>
       <h3>Subpage: {shopData.subpage}</h3> */}
       <DisplayText size="large">Products in your store:</DisplayText>
-      {products.map((product) => {
-        return <Product key={product.id} product={product} />;
-      })}
+      <Products products={products} deleteItem={deleteApiData} />
       <a href={"/" + shopData.subpage}>View the Shop</a>
     </Page>
   );

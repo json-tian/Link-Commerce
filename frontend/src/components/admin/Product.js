@@ -2,7 +2,9 @@ import React from "react";
 import { DeleteMajor, EditMajor } from "@shopify/polaris-icons";
 import { Button, ButtonGroup, Card, Icon, Stack } from "@shopify/polaris";
 
-function Product({ product }) {
+export function Product(props) {
+  const { product, deleteThisProduct } = props;
+
   return (
     <Card
       title={product.title}
@@ -18,7 +20,7 @@ function Product({ product }) {
         <Stack spacing="loose" vertical>
           <Stack distribution="trailing">
             <ButtonGroup>
-              <Button destructive>
+              <Button destructive onClick={deleteThisProduct}>
                 <Icon source={DeleteMajor} color="base" />
                 {/* Delete Product */}
               </Button>
@@ -33,5 +35,3 @@ function Product({ product }) {
     </Card>
   );
 }
-
-export default Product;
