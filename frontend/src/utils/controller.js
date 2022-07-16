@@ -8,3 +8,7 @@ export function getApiData(url) {
 export function deleteApiData(url) {
   return axios.delete(API_BASE + url).then((response) => response.data);
 }
+
+export function patchApiData(url, body) {
+  return axios.patch(API_BASE + url, body).then((response) => response.data);
+}
