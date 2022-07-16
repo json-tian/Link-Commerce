@@ -13,3 +13,7 @@ shop1.products << Product.create(title: "Cool Pad", description: "fun to use", i
 
 shop2 = Shop.create(name: "Hexabox.shop", description: "3d printer hobby store", background: "45,200,200", subpage:"jason")
 shop2.products << Product.create(title: "PLA Filament", description: "good basic filament", image: "", price: "35.44", quantity: 0, sold: 0)
+
+shop3 = Shop.create(name: "Darryl's Shop", description: "Shop Darryl is using for testing.", background: "200,200,200", subpage:"darryl")
+shop3.products << Product.create(title: "Cash Mug", description: "Mug with a picture of Darryl holding cash.", image: "", price: "19.81", quantity: 30, sold: 0)
+shop3.products << Product.create(title: "Controller Crewneck", description: "Crewneck sweater with a picture of Darryl holding a controller.", image: "", price: "48.88", quantity: 25, sold: 5)
