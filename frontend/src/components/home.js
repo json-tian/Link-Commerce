@@ -12,10 +12,9 @@ import {
 import { postSignin } from "../utils/controller";
 import { gapi } from "gapi-script";
 import { useState, useEffect } from "react";
-import Login from "./Login";
+import Login from "./login";
 
-function Home({ setUser}) {
-
+function Home({ setUser }) {
   return (
     <Page title="Link Commerce" primaryAction={<Login setUser={setUser} />}>
       <Stack vertical spacing="loose">

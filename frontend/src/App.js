@@ -5,7 +5,7 @@ import Admin from "./components/admin/Admin";
 import React from "react";
 import "@shopify/polaris/build/esm/styles.css";
 import { useEffect, useState } from "react";
-import Home from "./components/Home";
+import Home from "./components/home";
 import NotFound from "./NotFound";
 import { gapi } from "gapi-script";
 

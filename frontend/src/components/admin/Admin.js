@@ -13,12 +13,13 @@ import React from "react";
 import { Products } from "./Products";
 import {
   Button,
+  ButtonGroup,
   DisplayText,
   Page,
   PageActions,
   TextField,
 } from "@shopify/polaris";
-import Logout from "../Logout";
+import Logout from "../logout";
 import NotAuthorized from "../../NotAuthorized";
 
 function Admin({ user }) {
@@ -31,21 +32,59 @@ function Admin({ user }) {
     navigate(0);
   };
 
+  const [disabledShopName, setDisabledShopName] = useState(true);
+  const [disabledShopDescription, setDisabledShopDescription] = useState(true);
+  const [disabledShopSubpage, setDisabledShopSubpage] = useState(true);
   const [shopName, setShopName] = useState("");
   const [shopDescription, setShopDescription] = useState("");
   const [shopSubpage, setShopSubpage] = useState("");
   const [adminUser, setAdminUser] = useState(user);
 
-  const handleShopNameChange = useCallback((newValue) => setShopName(newValue), []);
-  const handleShopDescriptionChange = useCallback((newValue) => setShopDescription(newValue), []);
-  const handleShopSubpageChange = useCallback((newValue) => setShopSubpage(newValue), []);
+  const handleShopNameChange = useCallback(
+    (newValue) => setShopName(newValue),
+    []
+  );
+  const handleShopDescriptionChange = useCallback(
+    (newValue) => setShopDescription(newValue),
+    []
+  );
+  const handleShopSubpageChange = useCallback(
+    (newValue) => setShopSubpage(newValue),
+    []
+  );
 
-  const saveShopName = () =>
+  const handleEditShopName = useCallback(() => setDisabledShopName(false), []);
+  const handleEditShopDescription = useCallback(
+    () => setDisabledShopDescription(false),
+    []
+  );
+  const handleEditShopSubpage = useCallback(
+    () => setDisabledShopSubpage(false),
+    []
+  );
+
+  const handleSaveShopName = useCallback(() => setDisabledShopName(true), []);
+  const handleSaveShopDescription = useCallback(
+    () => setDisabledShopDescription(true),
+    []
+  );
+  const handleSaveShopSubpage = useCallback(
+    () => setDisabledShopSubpage(true),
+    []
+  );
+
+  const saveShopName = () => {
     patchApiData("shops/" + shopData.id, { name: shopName });
-  const saveShopDescription = () =>
+    handleSaveShopName();
+  };
+  const saveShopDescription = () => {
     patchApiData("shops/" + shopData.id, { description: shopDescription });
-  const saveShopSubpage = () =>
+    handleSaveShopDescription();
+  };
+  const saveShopSubpage = () => {
     patchApiData("shops/" + shopData.id, { subpage: shopSubpage });
+    handleSaveShopSubpage();
+  };
 
   const handleDelete = (url) => {
     deleteApiData(url);
@@ -89,38 +128,47 @@ function Admin({ user }) {
           <DisplayText size="large">Store Details:</DisplayText>
           <TextField
             label="Shop Name"
-            // disabled
+            disabled={disabledShopName}
             value={shopName}
             onChange={handleShopNameChange}
             autoComplete="off"
             connectedRight={
-              <Button primary onClick={saveShopName}>
-                Save
-              </Button>
+              <ButtonGroup>
+                <Button onClick={handleEditShopName}>Edit</Button>
+                <Button primary onClick={saveShopName}>
+                  Save
+                </Button>
+              </ButtonGroup>
             }
           />
           <TextField
             label="Shop Description"
-            // disabled
+            disabled={disabledShopDescription}
             value={shopDescription}
             onChange={handleShopDescriptionChange}
             autoComplete="off"
             connectedRight={
-              <Button primary onClick={saveShopDescription}>
-                Save
-              </Button>
+              <ButtonGroup>
+                <Button onClick={handleEditShopDescription}>Edit</Button>
+                <Button primary onClick={saveShopDescription}>
+                  Save
+                </Button>
+              </ButtonGroup>
             }
           />
           <TextField
             label="Shop Subpage"
-            // disabled
+            disabled={disabledShopSubpage}
             value={shopSubpage}
-            onChange={setShopSubpage}
+            onChange={handleShopSubpageChange}
             autoComplete="off"
             connectedRight={
-              <Button primary onClick={saveShopSubpage}>
-                Save
-              </Button>
+              <ButtonGroup>
+                <Button onClick={handleEditShopSubpage}>Edit</Button>
+                <Button primary onClick={saveShopSubpage}>
+                  Save
+                </Button>
+              </ButtonGroup>
             }
           />
           <DisplayText size="large">Products in your store:</DisplayText>
