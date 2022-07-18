@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import {
+  addApiData,
   deleteApiData,
   getApiData,
   patchApiData,
@@ -42,11 +43,12 @@ function Admin({ user }) {
   const [shopDescription, setShopDescription] = useState("");
   const [shopSubpage, setShopSubpage] = useState("");
 
-  const [addProductActive, setAddProductActive] = useState(true);
+  const [addProductActive, setAddProductActive] = useState(false);
 
   const [addProductName, setAddProductName] = useState("");
   const [addProductDescription, setAddProductDescription] = useState("");
   const [addProductPrice, setAddProductPrice] = useState("");
+  const [addProductQuantity, setAddProductQuantity] = useState("");
 
   const [adminUser, setAdminUser] = useState(user);
 
@@ -111,6 +113,24 @@ function Admin({ user }) {
     (price) => setAddProductPrice(price),
     [addProductPrice]
   );
+  const handleAddProductQuantity = useCallback(
+    (quantity) => setAddProductQuantity(quantity),
+    [addProductQuantity]
+  );
+
+  // remember to do input sanitization later
+  const handleAddProduct = () => {
+    addApiData("shops/" + shopData.id + "/products", {
+      title: addProductName,
+      description: addProductDescription,
+      image: "",
+      price: parseFloat(addProductPrice),
+      quantity: parseInt(addProductQuantity),
+      sold: 0,
+      shop_id: shopData.id
+    });
+    refreshPage();
+  };
 
   const handleDeleteProduct = (url) => {
     deleteApiData(url);
@@ -152,7 +172,7 @@ function Admin({ user }) {
       title="Add a new product to your shop!"
       primaryAction={{
         content: "Add product",
-        onAction: handleAddProductModal,
+        onAction: handleAddProduct,
       }}
     >
       <Modal.Section>
@@ -160,19 +180,25 @@ function Admin({ user }) {
           label="Product Name"
           value={addProductName}
           onChange={handleAddProductName}
-        ></TextField>
+        />
         <TextField
           label="Description"
           value={addProductDescription}
           onChange={handleAddProductDescription}
-        ></TextField>
+        />
         <TextField
           label="Price"
           type="number"
           prefix="$"
           value={addProductPrice}
           onChange={handleAddProductPrice}
-        ></TextField>
+        />
+        <TextField
+          label="Quantity"
+          type="number"
+          value={addProductQuantity}
+          onChange={handleAddProductQuantity}
+        />
         <DropZone label="Example Image" type="file" onDrop={() => {}}>
           <DropZone.FileUpload />
         </DropZone>
