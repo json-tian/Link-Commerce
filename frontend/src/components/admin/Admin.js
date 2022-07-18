@@ -63,27 +63,27 @@ function Admin({ user }) {
     []
   );
 
-  const handleSaveShopName = useCallback(() => setDisabledShopName(true), []);
-  const handleSaveShopDescription = useCallback(
+  const saveShopName = useCallback(() => setDisabledShopName(true), []);
+  const saveShopDescription = useCallback(
     () => setDisabledShopDescription(true),
     []
   );
-  const handleSaveShopSubpage = useCallback(
+  const saveShopSubpage = useCallback(
     () => setDisabledShopSubpage(true),
     []
   );
 
-  const saveShopName = () => {
+  const handleSaveShopName = () => {
     patchApiData("shops/" + shopData.id, { name: shopName });
-    handleSaveShopName();
+    saveShopName();
   };
-  const saveShopDescription = () => {
+  const handleSaveShopDescription = () => {
     patchApiData("shops/" + shopData.id, { description: shopDescription });
-    handleSaveShopDescription();
+    saveShopDescription();
   };
-  const saveShopSubpage = () => {
+  const handleSaveShopSubpage = () => {
     patchApiData("shops/" + shopData.id, { subpage: shopSubpage });
-    handleSaveShopSubpage();
+    saveShopSubpage();
   };
 
   const handleDelete = (url) => {
@@ -135,7 +135,7 @@ function Admin({ user }) {
             connectedRight={
               <ButtonGroup>
                 <Button onClick={handleEditShopName}>Edit</Button>
-                <Button primary onClick={saveShopName}>
+                <Button primary onClick={handleSaveShopName}>
                   Save
                 </Button>
               </ButtonGroup>
@@ -150,7 +150,7 @@ function Admin({ user }) {
             connectedRight={
               <ButtonGroup>
                 <Button onClick={handleEditShopDescription}>Edit</Button>
-                <Button primary onClick={saveShopDescription}>
+                <Button primary onClick={handleSaveShopDescription}>
                   Save
                 </Button>
               </ButtonGroup>
@@ -165,7 +165,7 @@ function Admin({ user }) {
             connectedRight={
               <ButtonGroup>
                 <Button onClick={handleEditShopSubpage}>Edit</Button>
-                <Button primary onClick={saveShopSubpage}>
+                <Button primary onClick={handleSaveShopSubpage}>
                   Save
                 </Button>
               </ButtonGroup>
