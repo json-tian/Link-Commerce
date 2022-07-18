@@ -9,8 +9,12 @@ Rails.application.routes.draw do
       resources :shops do
         resources :products
       end
+      # get 'register', to: 'users/sessions#new'
+      # post 'sign_in', to: 'users/sessions#create'
+      # post 'sign_out', to: 'users/sessions#destroy'
     end
   end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

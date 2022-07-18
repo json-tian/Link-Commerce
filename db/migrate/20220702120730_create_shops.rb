@@ -5,6 +5,7 @@ class CreateShops < ActiveRecord::Migration[7.0]
       t.string :description
       t.string :background
       t.string :subpage
+      t.string :email
       t.timestamps
     end
   end

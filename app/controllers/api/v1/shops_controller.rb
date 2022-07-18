@@ -46,6 +46,6 @@ class Api::V1::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.permit(:shop, :name, :description, :background, :subpage)
+      params.permit(:shop, :name, :description, :background, :subpage, :email)
     end
 end
