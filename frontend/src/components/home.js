@@ -1,5 +1,3 @@
-import Login from "./login";
-import Logout from "./logout";
 import React from "react";
 import {
   Page,
@@ -11,13 +9,15 @@ import {
   FooterHelp,
   Link,
 } from "@shopify/polaris";
+import { postSignin } from "../utils/controller";
+import { gapi } from "gapi-script";
+import { useState, useEffect } from "react";
+import Login from "./Login";
 
-function Home({ user, setUser }) {
+function Home({ setUser}) {
+
   return (
-    <Page
-      title="Link Commerce"
-      primaryAction={<Login user setUser />}
-    >
+    <Page title="Link Commerce" primaryAction={<Login setUser={setUser} />}>
       <Stack vertical spacing="loose">
         <Stack distribution="center">
           <DisplayText size="extraLarge">
@@ -27,10 +27,6 @@ function Home({ user, setUser }) {
 
         <MediaCard
           title="Getting Started"
-          primaryAction={{
-            content: "Register Now",
-            onAction: () => {},
-          }}
           description="See how easy it is to sell online with Link Commerce. We'll help you get started.  We'll walk you through the process of creating your store, and we'll even help you set up your first product."
         >
           <img
@@ -66,7 +62,6 @@ function Home({ user, setUser }) {
             ]}
           />{" "}
         </Card>
-
       </Stack>
       <FooterHelp>
         Ready to start selling? <Link url="">Register today</Link>

@@ -5,32 +5,38 @@ import Admin from "./components/admin/Admin";
 import React from "react";
 import "@shopify/polaris/build/esm/styles.css";
 import { useEffect, useState } from "react";
+import Home from "./components/Home";
+import NotFound from "./NotFound";
 import { gapi } from "gapi-script";
-
-import Home from "./components/home";
-
-const clientId =
-  "526518063798-u6njeespbn6tciahb2lo1i24qc255c02.apps.googleusercontent.com";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [auth2, setAuth2] = useState(null);
 
   useEffect(() => {
-    // function start() {
-    //   setAuth2(gapi.auth2.init({ clientId: clientId, scope: "" }));
-    // }
-
-    // gapi.load('client:auth2', start)
-  });
+    gapi.load(
+      "client:auth2",
+      () => {
+        gapi.auth2
+          .init({
+            clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+            scope: "",
+          })
+          .then(() => {
+            // gapi.auth2.getAuthInstance().signIn();
+            setUser(gapi.auth2.getAuthInstance().currentUser.get().wt.cu);
+          });
+      },
+      []
+    );
+  }, []);
 
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home user setUser />} />
+        <Route exact path="/" element={<Home setUser={setUser} />} />
         <Route exact path="/:shop" element={<Shop />} />
-        <Route exact path="/:shop/admin" element={<Admin />} />
-        <Route path="*" element={<p>Page not found</p>} />
+        <Route exact path="/:shop/admin" element={<Admin user={user} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

@@ -1,14 +1,23 @@
 import { GoogleLogin } from "react-google-login";
 import React from "react";
 import { gapi } from "gapi-script";
+import { useNavigate } from "react-router-dom";
+import { getApiData } from "../utils/controller";
 
-const clientId =
-  "526518063798-u6njeespbn6tciahb2lo1i24qc255c02.apps.googleusercontent.com";
+function Login({ setUser}) {
+  const navigate = useNavigate();
 
-function Login({ user, setUser }) {
   const onSuccess = (res) => {
     console.log("Login Success for: ", res.profileObj);
-    setUser(gapi.auth.getToken().access_token);
+    // let auth2 = gapi.auth2.getAuthInstance();
+    // auth2.disconnect();
+    //  setUser(gapi.auth2.getToken().access_token);
+    setUser(res.profileObj.email);
+    getApiData("shops/?email=" + res.profileObj.email).then((shopData) => {
+      navigate("/" + shopData[0].subpage + "/admin");
+    });
+
+
   };
 
   const onFailure = (res) => {
@@ -19,7 +28,7 @@ function Login({ user, setUser }) {
   return (
     <div>
       <GoogleLogin
-        clientId={clientId}
+        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
         onSuccess={onSuccess}
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}

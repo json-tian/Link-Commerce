@@ -18,8 +18,10 @@ import {
   PageActions,
   TextField,
 } from "@shopify/polaris";
+import Logout from "../Logout";
+import NotAuthorized from "../../NotAuthorized";
 
-function Admin() {
+function Admin({ user }) {
   let { shop } = useParams();
   const [shopData, setShopData] = useState({});
   const [products, setProducts] = useState([]);
@@ -32,9 +34,12 @@ function Admin() {
   const [shopName, setShopName] = useState("");
   const [shopDescription, setShopDescription] = useState("");
   const [shopSubpage, setShopSubpage] = useState("");
+  const [adminUser, setAdminUser] = useState(user);
 
-  const handleDetailsChange = (setValue) =>
-    useCallback((newValue) => setValue(newValue), []);
+  const handleShopNameChange = useCallback((newValue) => setShopName(newValue), []);
+  const handleShopDescriptionChange = useCallback((newValue) => setShopDescription(newValue), []);
+  const handleShopSubpageChange = useCallback((newValue) => setShopSubpage(newValue), []);
+
   const saveShopName = () =>
     patchApiData("shops/" + shopData.id, { name: shopName });
   const saveShopDescription = () =>
@@ -69,54 +74,59 @@ function Admin() {
   }, [shopData]);
 
   return (
-    <Page
-      breadcrumbs={[{ content: shopData.name, url: "/" + shopData.subpage }]}
-      title="Admin Page"
-      subtitle={shopData.name}
-      compactTitle
-    >
-      <DisplayText size="extraLarge">Welcome to the Admin Page</DisplayText>
-      <DisplayText size="large">Store Details:</DisplayText>
-      <TextField
-        label="Shop Name"
-        // disabled
-        value={shopName}
-        onChange={handleDetailsChange(setShopName)}
-        autoComplete="off"
-        connectedRight={
-          <Button primary onClick={saveShopName}>
-            Save
-          </Button>
-        }
-      />
-      <TextField
-        label="Shop Description"
-        // disabled
-        value={shopDescription}
-        onChange={handleDetailsChange(setShopDescription)}
-        autoComplete="off"
-        connectedRight={
-          <Button primary onClick={saveShopDescription}>
-            Save
-          </Button>
-        }
-      />
-      <TextField
-        label="Shop Subpage"
-        // disabled
-        value={shopSubpage}
-        onChange={handleDetailsChange(setShopSubpage)}
-        autoComplete="off"
-        connectedRight={
-          <Button primary onClick={saveShopSubpage}>
-            Save
-          </Button>
-        }
-      />
-      <DisplayText size="large">Products in your store:</DisplayText>
-      <Products products={products} deleteItem={handleDelete} />
+    <React.Fragment>
+      {user && user === shopData.email ? (
+        <Page
+          breadcrumbs={[
+            { content: shopData.name, url: "/" + shopData.subpage },
+          ]}
+          title="Admin Page"
+          subtitle={shopData.name}
+          compactTitle
+          primaryAction={<Logout />}
+        >
+          <DisplayText size="extraLarge">Welcome to the Admin Page</DisplayText>
+          <DisplayText size="large">Store Details:</DisplayText>
+          <TextField
+            label="Shop Name"
+            // disabled
+            value={shopName}
+            onChange={handleShopNameChange}
+            autoComplete="off"
+            connectedRight={
+              <Button primary onClick={saveShopName}>
+                Save
+              </Button>
+            }
+          />
+          <TextField
+            label="Shop Description"
+            // disabled
+            value={shopDescription}
+            onChange={handleShopDescriptionChange}
+            autoComplete="off"
+            connectedRight={
+              <Button primary onClick={saveShopDescription}>
+                Save
+              </Button>
+            }
+          />
+          <TextField
+            label="Shop Subpage"
+            // disabled
+            value={shopSubpage}
+            onChange={setShopSubpage}
+            autoComplete="off"
+            connectedRight={
+              <Button primary onClick={saveShopSubpage}>
+                Save
+              </Button>
+            }
+          />
+          <DisplayText size="large">Products in your store:</DisplayText>
+          <Products products={products} deleteItem={handleDelete} />
 
-      {/* <PageActions
+          {/* <PageActions
       primaryAction={{
         content: "Save Changes",
       }}
@@ -127,7 +137,11 @@ function Admin() {
         },
       ]}
     /> */}
-    </Page>
+        </Page>
+      ) : (
+        <NotAuthorized />
+      )}
+    </React.Fragment>
   );
 }
 
