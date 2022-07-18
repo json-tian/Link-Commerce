@@ -23,7 +23,7 @@ import {
   PageActions,
   TextField,
 } from "@shopify/polaris";
-import Logout from "../logout";
+import Logout from "../Logout";
 import NotAuthorized from "../../NotAuthorized";
 
 function Admin({ user }) {
