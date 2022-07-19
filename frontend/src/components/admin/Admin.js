@@ -15,12 +15,13 @@ import { Products } from "./Products";
 import {
   Button,
   ButtonGroup,
+  ColorPicker,
   DisplayText,
   DropZone,
   Frame,
   Modal,
   Page,
-  PageActions,
+  Stack,
   TextField,
 } from "@shopify/polaris";
 import Logout from "../logout";
@@ -42,6 +43,7 @@ function Admin({ user }) {
   const [shopName, setShopName] = useState("");
   const [shopDescription, setShopDescription] = useState("");
   const [shopSubpage, setShopSubpage] = useState("");
+  const [shopBackground, setShopBackground] = useState({});
 
   const [addProductActive, setAddProductActive] = useState(false);
 
@@ -96,6 +98,11 @@ function Admin({ user }) {
     patchApiData("shops/" + shopData.id, { subpage: shopSubpage });
     saveShopSubpage();
   };
+  const handleSaveShopBackground = () => {
+    patchApiData("shops/" + shopData.id, {
+      background: `${shopBackground.hue},${shopBackground.saturation},${shopBackground.brightness}`,
+    });
+  };
 
   const handleAddProductModal = useCallback(
     () => setAddProductActive(!addProductActive),
@@ -127,7 +134,7 @@ function Admin({ user }) {
       price: parseFloat(addProductPrice),
       quantity: parseInt(addProductQuantity),
       sold: 0,
-      shop_id: shopData.id
+      shop_id: shopData.id,
     });
     refreshPage();
   };
@@ -144,6 +151,14 @@ function Admin({ user }) {
         setShopName(shopData[0].name);
         setShopDescription(shopData[0].description);
         setShopSubpage(shopData[0].subpage);
+        setShopBackground(() => {
+          var hueSaturationBrightness = shopData[0].background.split(",");
+          return {
+            hue: hueSaturationBrightness[0],
+            saturation: hueSaturationBrightness[1],
+            brightness: hueSaturationBrightness[2],
+          };
+        });
       });
     }
     return getData();
@@ -264,9 +279,15 @@ function Admin({ user }) {
           </ButtonGroup>
         }
       />
+      <Stack vertical alignment="center" distribution="fillEvenly">
+        <DisplayText size="small">Shop Background</DisplayText>
+        <ColorPicker onChange={setShopBackground} color={shopBackground} />
+        <Button primary onClick={handleSaveShopBackground}>
+          Save
+        </Button>
+      </Stack>
       <DisplayText size="large">Products in your store:</DisplayText>
       <Products products={products} deleteItem={handleDeleteProduct} />
-
       {/* <PageActions
       primaryAction={{
         content: "Save Changes",
