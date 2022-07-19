@@ -12,7 +12,7 @@ import {
 import { postSignin } from "../utils/controller";
 import { gapi } from "gapi-script";
 import { useState, useEffect } from "react";
-import Login from "./login";
+import Login from "./Login";
 
 function Home({ setUser }) {
   return (
