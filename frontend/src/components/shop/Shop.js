@@ -45,6 +45,12 @@ function Shop() {
           <Button url={"/" + shopData.subpage + "/admin"}>
             Edit Store Details...
           </Button>
+
+        }
+        primaryAction={
+          <Button>
+            Shopping Cart
+          </Button>
         }
       >
         <Layout>
