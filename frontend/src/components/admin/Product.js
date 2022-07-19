@@ -1,22 +1,24 @@
 import React from "react";
 import { DeleteMajor, EditMajor } from "@shopify/polaris-icons";
-import { Button, ButtonGroup, Card, Icon, Stack } from "@shopify/polaris";
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  DisplayText,
+  Icon,
+  Stack,
+} from "@shopify/polaris";
 
 export function Product(props) {
   const { product, deleteThisProduct } = props;
 
   return (
-    <Card
-      title={product.title}
-      // sectioned={true}
-      // secondaryFooterActions={[
-      //   { content: "Delete Product", destructive: true },
-      // ]}
-
-      // primaryFooterAction={{ content: "Edit Product" }}
-    >
+    <Card title={product.title}>
+      <Stack></Stack>
       <Card.Section title="Description">
         {product.description}
+        <DisplayText size="small">${product.price}</DisplayText>
+        <p>Quantity: {product.quantity}</p>
         <Stack spacing="loose" vertical>
           <Stack distribution="trailing">
             <ButtonGroup>

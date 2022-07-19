@@ -14,8 +14,7 @@ import { gapi } from "gapi-script";
 import { useState, useEffect } from "react";
 import Login from "./Login";
 
-function Home({ setUser}) {
-
+function Home({ setUser }) {
   return (
     <Page title="Link Commerce" primaryAction={<Login setUser={setUser} />}>
       <Stack vertical spacing="loose">
