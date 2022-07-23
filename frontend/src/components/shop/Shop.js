@@ -14,7 +14,7 @@ import {
   Stack,
 } from "@shopify/polaris";
 
-function Shop() {
+function Shop({ user }) {
   let { shop } = useParams();
   const [shopData, setShopData] = useState({});
   const [products, setProducts] = useState([]);
@@ -42,15 +42,13 @@ function Shop() {
       <Page
         title={shopData.name}
         secondaryActions={
-          <Button url={"/" + shopData.subpage + "/admin"}>
-            Edit Store Details...
-          </Button>
-
-        }
-        primaryAction={
-          <Button>
-            Shopping Cart
-          </Button>
+          user && user === shopData.email ? (
+            <Button url={"/" + shopData.subpage + "/admin"}>
+              Edit Store Details...
+            </Button>
+          ) : (
+            ""
+          )
         }
       >
         <Layout>

@@ -34,7 +34,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Home setUser={setUser} />} />
-        <Route exact path="/:shop" element={<Shop />} />
+        <Route exact path="/:shop" element={<Shop user={user} />} />
         <Route exact path="/:shop/admin" element={<Admin user={user} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
