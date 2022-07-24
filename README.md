@@ -18,11 +18,10 @@ Merchants and customers can then see the fully functional store at the STORE pag
  
 ## Challenge Factor Concepts
  
-* OAuth 2.0 Client. We want multiple users to be able to manage a single shop with different permissions. In addition, customer accounts should not be able to authorize the shop’s admin page.
-No-code/low-code platforms. Link Commerce is built for the merchant to be able to create their ecommerce store by interacting with our Admin page UI without writing a single line of code.
-* Integration with cloud technologies. To store our product images, we will use Google Cloud Storage to store the images over cloud.
-* Scalability. With scalability in mind, we will set up load balancing using Redis and kubernetes clusters and implement our GraphQL with batch loading so that it can scale well.
-* In-depth work with technology. React. We will use hooks, contexts to store our frontend state and possibly Redux
+* No-code/low-code platforms. Link Commerce is built for the merchant to be able to create their ecommerce store by interacting with our Admin page UI without writing a single line of code.
+* Integration with cloud technologies. We will integrate with Stripe to implement single tap purchases with Google Pay. To store our product images, we will use Firebase Storage to store the images over cloud.
+* Non-trivial frontend. We are using the Polaris components library to design our UI. Polaris has various components to help design our store admin page.
+* In-depth work with technology. Ruby. We implemented our backend API using Ruby on Rails. Ruby on Rails is a full-stack framework but we have decided to use a cool Ruby on Rails feature to only use Rails as an API so that we could use React as our frontend. This is a specialization of Ruby on Rails.
  
 ## Beta Version Key Features
  
@@ -30,24 +29,26 @@ Admin Page
 * Merchants can register for an account through Google SSO
 * Merchants can design basic elements of their store such as the heading text, and the site background color.
 * Merchants can create simple products with the product title, description, image, and price. Images will be stored on the cloud.
+
 Shop Page
 * Each merchant account has a designated subdomain where anyone has access to view the shop created from the Admin Page and can customize the subdomain
  
 ## Final Version Key Features
  
 Admin Page
-* Merchants can authorize other staff using OAuth 2.0 to be able to edit the store
-* Customers could create a customer account to get their shipping info, order details, and favorite shops.
+* Merchants could receive payment through Google Pay from customers
+* Merchants could view the orders that they have received
+
 Shop Page
-* Each shop will be able to accept payment from either Google Pay or Apple Pay
+* Each shop will be able to accept payment from Google Pay
  
 ## Tech Stack
  
 Frontend: React
 
-Backend: Ruby on Rails + GraphQL backend API
+Backend: Ruby on Rails API only
 
-Cloud: Deploy on Google Cloud, Google Cloud Storage for image storage
+Cloud: Deploy on Google Cloud, Firebase Storage for image storage, Stripe Google Pay integration
 
 Database: MySQL
  
