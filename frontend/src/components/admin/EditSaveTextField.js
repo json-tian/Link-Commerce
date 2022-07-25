@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import React from "react";
 
 export function EditSaveTextField(props) {
-  const { label, initialValue, apiHandler } = props;
+  const { label, initialValue, apiHandler, callback } = props;
 
   const [disabled, setDisabled] = useState(true);
   const [value, setValue] = useState(initialValue);
@@ -15,7 +15,8 @@ export function EditSaveTextField(props) {
   const save = () => {
     apiHandler(value);
     handleSave();
-  }
+    if (callback) callback(value);
+  };
 
   return (
     <TextField
@@ -27,7 +28,9 @@ export function EditSaveTextField(props) {
       connectedRight={
         <ButtonGroup>
           <Button onClick={handleEdit}>Edit</Button>
-          <Button primary onClick={save}>Save</Button>
+          <Button primary onClick={save}>
+            Save
+          </Button>
         </ButtonGroup>
       }
     />

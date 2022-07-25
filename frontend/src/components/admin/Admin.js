@@ -39,12 +39,16 @@ function Admin({ user }) {
     navigate(0);
   };
 
-  const [disabledShopName, setDisabledShopName] = useState(true);
-  const [disabledShopDescription, setDisabledShopDescription] = useState(true);
-  const [disabledShopSubpage, setDisabledShopSubpage] = useState(true);
+  // saved for use in breadcrumbs and subtitle display
   const [shopName, setShopName] = useState("");
-  const [shopDescription, setShopDescription] = useState("");
   const [shopSubpage, setShopSubpage] = useState("");
+  const shopNameCallback = (name) => {
+    setShopName(name);
+  };
+  const subpageCallback = (subpage) => {
+    setShopSubpage(subpage);
+  };
+
   const [shopBackground, setShopBackground] = useState({});
 
   const [addProductActive, setAddProductActive] = useState(false);
@@ -200,9 +204,14 @@ function Admin({ user }) {
 
   const actualPageMarkup = (
     <Page
-      breadcrumbs={[{ content: shopName, url: "/" + shopSubpage }]}
+      breadcrumbs={[
+        {
+          content: shopName ? shopName : shopData.name,
+          url: "/" + (shopSubpage ? shopSubpage : shopData.subpage),
+        },
+      ]}
       title="Admin Page"
-      subtitle={shopData.name}
+      subtitle={shopName ? shopName : shopData.name}
       compactTitle
       primaryAction={<Logout />}
       secondaryActions={addProductButton}
@@ -214,6 +223,7 @@ function Admin({ user }) {
         label="Shop Name"
         initialValue={shopData.name}
         apiHandler={saveShopName}
+        callback={shopNameCallback}
       />
       <EditSaveTextField
         label="Shop Description"
@@ -224,6 +234,7 @@ function Admin({ user }) {
         label="Shop Subpage"
         initialValue={shopData.subpage}
         apiHandler={saveShopSubpage}
+        callback={subpageCallback}
       />
       <Stack vertical alignment="center" distribution="fillEvenly">
         <DisplayText size="small">Shop Background</DisplayText>
@@ -234,17 +245,6 @@ function Admin({ user }) {
       </Stack>
       <DisplayText size="large">Products in your store:</DisplayText>
       <Products products={products} deleteItem={handleDeleteProduct} />
-      {/* <PageActions
-      primaryAction={{
-        content: "Save Changes",
-      }}
-      secondaryActions={[
-        {
-          content: "Discard Changes",
-          destructive: true,
-        },
-      ]}
-    /> */}
     </Page>
   );
 
