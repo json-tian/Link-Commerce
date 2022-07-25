@@ -2,7 +2,7 @@
 lock "~> 3.17.0"
 
 set :application, "project-link-commerce"
-set :repo_url, "https://github.com/json-tian/project-link-commerce.git"
+set :repo_url, "git@github.com:UTSCC09/project-link-commerce.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
