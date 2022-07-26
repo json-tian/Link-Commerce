@@ -14,7 +14,6 @@ import React from "react";
 import { Products } from "./Products";
 import {
   Button,
-  ButtonGroup,
   ColorPicker,
   DisplayText,
   DropZone,
@@ -26,6 +25,9 @@ import {
 } from "@shopify/polaris";
 import Logout from "../Logout";
 import NotAuthorized from "../../NotAuthorized";
+import { storage } from "../../firebase";
+import { ref } from "firebase/storage";
+import { EditSaveTextField } from "./EditSaveTextField";
 
 function Admin({ user }) {
   let { shop } = useParams();
@@ -37,12 +39,16 @@ function Admin({ user }) {
     navigate(0);
   };
 
-  const [disabledShopName, setDisabledShopName] = useState(true);
-  const [disabledShopDescription, setDisabledShopDescription] = useState(true);
-  const [disabledShopSubpage, setDisabledShopSubpage] = useState(true);
+  // saved for use in breadcrumbs and subtitle display
   const [shopName, setShopName] = useState("");
-  const [shopDescription, setShopDescription] = useState("");
   const [shopSubpage, setShopSubpage] = useState("");
+  const shopNameCallback = (name) => {
+    setShopName(name);
+  };
+  const subpageCallback = (subpage) => {
+    setShopSubpage(subpage);
+  };
+
   const [shopBackground, setShopBackground] = useState({});
 
   const [addProductActive, setAddProductActive] = useState(false);
@@ -52,52 +58,21 @@ function Admin({ user }) {
   const [addProductPrice, setAddProductPrice] = useState("");
   const [addProductQuantity, setAddProductQuantity] = useState("");
 
+  const [acceptedFile, setAcceptedFile] = useState([]);
+  const [rejectedFile, setRejectedFile] = useState([]);
+
   const [adminUser, setAdminUser] = useState(user);
 
-  const handleShopName = useCallback((name) => setShopName(name), [shopName]);
-  const handleShopDescription = useCallback(
-    (description) => setShopDescription(description),
-    [shopDescription]
-  );
-  const handleShopSubpage = useCallback((subpage) => setShopSubpage(subpage), [
-    shopSubpage,
-  ]);
-
-  const handleEditShopName = useCallback(() => setDisabledShopName(false), [
-    disabledShopName,
-  ]);
-  const handleEditShopDescription = useCallback(
-    () => setDisabledShopDescription(false),
-    [disabledShopDescription]
-  );
-  const handleEditShopSubpage = useCallback(
-    () => setDisabledShopSubpage(false),
-    [disabledShopSubpage]
-  );
-
-  const saveShopName = useCallback(() => setDisabledShopName(true), [
-    disabledShopName,
-  ]);
-  const saveShopDescription = useCallback(
-    () => setDisabledShopDescription(true),
-    [disabledShopDescription]
-  );
-  const saveShopSubpage = useCallback(() => setDisabledShopSubpage(true), [
-    disabledShopSubpage,
-  ]);
-
-  const handleSaveShopName = () => {
+  const saveShopName = (shopName) => {
     patchApiData("shops/" + shopData.id, { name: shopName });
-    saveShopName();
   };
-  const handleSaveShopDescription = () => {
+  const saveShopDescription = (shopDescription) => {
     patchApiData("shops/" + shopData.id, { description: shopDescription });
-    saveShopDescription();
   };
-  const handleSaveShopSubpage = () => {
+  const saveShopSubpage = (shopSubpage) => {
     patchApiData("shops/" + shopData.id, { subpage: shopSubpage });
-    saveShopSubpage();
   };
+
   const handleSaveShopBackground = () => {
     patchApiData("shops/" + shopData.id, {
       background: `${shopBackground.hue},${shopBackground.saturation},${shopBackground.brightness}`,
@@ -148,9 +123,6 @@ function Admin({ user }) {
     function getData() {
       getApiData("shops/?subpage=" + shop).then((shopData) => {
         setShopData(shopData[0]);
-        setShopName(shopData[0].name);
-        setShopDescription(shopData[0].description);
-        setShopSubpage(shopData[0].subpage);
         setShopBackground(() => {
           var hueSaturationBrightness = shopData[0].background.split(",");
           return {
@@ -173,9 +145,17 @@ function Admin({ user }) {
     return getData();
   }, [shopData]);
 
+  const uploadFile = (file) => {
+    if (!file) return;
+
+    const storageRef = ref(storage, `/products/`);
+  };
+
   const addProductButton = (
     <Button onClick={handleAddProductModal}>Add product</Button>
   );
+
+  // const fileUpload = !files.length && <DropZone.FileUpload />;
 
   const addProductModal = (
     // <div style={{ height: "50%" }}>
@@ -215,7 +195,7 @@ function Admin({ user }) {
           onChange={handleAddProductQuantity}
         />
         <DropZone label="Example Image" type="file" onDrop={() => {}}>
-          <DropZone.FileUpload />
+          {/* {fileUpload} */}
         </DropZone>
       </Modal.Section>
     </Modal>
@@ -224,9 +204,14 @@ function Admin({ user }) {
 
   const actualPageMarkup = (
     <Page
-      breadcrumbs={[{ content: shopName, url: "/" + shopSubpage }]}
+      breadcrumbs={[
+        {
+          content: shopName ? shopName : shopData.name,
+          url: "/" + (shopSubpage ? shopSubpage : shopData.subpage),
+        },
+      ]}
       title="Admin Page"
-      subtitle={shopData.name}
+      subtitle={shopName ? shopName : shopData.name}
       compactTitle
       primaryAction={<Logout />}
       secondaryActions={addProductButton}
@@ -234,50 +219,22 @@ function Admin({ user }) {
       {addProductModal}
       <DisplayText size="extraLarge">Welcome to the Admin Page</DisplayText>
       <DisplayText size="large">Store Details:</DisplayText>
-      <TextField
+      <EditSaveTextField
         label="Shop Name"
-        disabled={disabledShopName}
-        value={shopName}
-        onChange={handleShopName}
-        autoComplete="off"
-        connectedRight={
-          <ButtonGroup>
-            <Button onClick={handleEditShopName}>Edit</Button>
-            <Button primary onClick={handleSaveShopName}>
-              Save
-            </Button>
-          </ButtonGroup>
-        }
+        initialValue={shopData.name}
+        apiHandler={saveShopName}
+        callback={shopNameCallback}
       />
-      <TextField
+      <EditSaveTextField
         label="Shop Description"
-        disabled={disabledShopDescription}
-        value={shopDescription}
-        onChange={handleShopDescription}
-        autoComplete="off"
-        connectedRight={
-          <ButtonGroup>
-            <Button onClick={handleEditShopDescription}>Edit</Button>
-            <Button primary onClick={handleSaveShopDescription}>
-              Save
-            </Button>
-          </ButtonGroup>
-        }
+        initialValue={shopData.description}
+        apiHandler={saveShopDescription}
       />
-      <TextField
+      <EditSaveTextField
         label="Shop Subpage"
-        disabled={disabledShopSubpage}
-        value={shopSubpage}
-        onChange={handleShopSubpage}
-        autoComplete="off"
-        connectedRight={
-          <ButtonGroup>
-            <Button onClick={handleEditShopSubpage}>Edit</Button>
-            <Button primary onClick={handleSaveShopSubpage}>
-              Save
-            </Button>
-          </ButtonGroup>
-        }
+        initialValue={shopData.subpage}
+        apiHandler={saveShopSubpage}
+        callback={subpageCallback}
       />
       <Stack vertical alignment="center" distribution="fillEvenly">
         <DisplayText size="small">Shop Background</DisplayText>
@@ -288,17 +245,6 @@ function Admin({ user }) {
       </Stack>
       <DisplayText size="large">Products in your store:</DisplayText>
       <Products products={products} deleteItem={handleDeleteProduct} />
-      {/* <PageActions
-      primaryAction={{
-        content: "Save Changes",
-      }}
-      secondaryActions={[
-        {
-          content: "Discard Changes",
-          destructive: true,
-        },
-      ]}
-    /> */}
     </Page>
   );
 

@@ -143,6 +143,8 @@ GEM
       timeout
     net-ssh (7.0.1)
     nio4r (2.5.8)
+    nokogiri (1.13.7-x64-mingw-ucrt)
+      racc (~> 1.4)
     nokogiri (1.13.7-x64-mingw32)
       racc (~> 1.4)
     oauth2 (1.4.10)
@@ -229,6 +231,7 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
+  x64-mingw-ucrt
   x64-mingw32
 
 DEPENDENCIES

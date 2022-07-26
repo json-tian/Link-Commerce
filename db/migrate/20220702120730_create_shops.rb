@@ -4,7 +4,7 @@ class CreateShops < ActiveRecord::Migration[7.0]
       t.string :name
       t.string :description
       t.string :background
-      t.string :subpage
+      t.string :subpage, null: false, index: { unique: true }
       t.string :email
       t.timestamps
     end

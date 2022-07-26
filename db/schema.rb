@@ -28,10 +28,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_15_163433) do
     t.string "name"
     t.string "description"
     t.string "background"
-    t.string "subpage"
+    t.string "subpage", null: false
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["subpage"], name: "index_shops_on_subpage", unique: true
   end
 
   create_table "users", force: :cascade do |t|
