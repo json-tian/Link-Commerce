@@ -1,28 +1,42 @@
 import { GoogleLogin } from "react-google-login";
 import React from "react";
-import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
-import { getApiData } from "../utils/controller";
+import { postApiData, getApiData } from "../utils/controller";
 
-function Login({ setUser}) {
+function Login({ setUser }) {
   const navigate = useNavigate();
 
+  // UID generator from https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
+  const generateUID = () => {
+    var firstPart = (Math.random() * 46656) | 0;
+    var secondPart = (Math.random() * 46656) | 0;
+    firstPart = ("000" + firstPart.toString(36)).slice(-3);
+    secondPart = ("000" + secondPart.toString(36)).slice(-3);
+    return firstPart + secondPart;
+  };
+
   const onSuccess = (res) => {
-    console.log("Login Success for: ", res.profileObj);
-    // let auth2 = gapi.auth2.getAuthInstance();
-    // auth2.disconnect();
-    //  setUser(gapi.auth2.getToken().access_token);
     setUser(res.profileObj.email);
     getApiData("shops/?email=" + res.profileObj.email).then((shopData) => {
-      navigate("/" + shopData[0].subpage + "/admin");
+      if (shopData.length !== 0) {
+        navigate("/" + shopData[0].subpage + "/admin");
+      } else {
+        // Create a new shop
+        postApiData("shops/", {
+          email: res.profileObj.email,
+          name: res.profileObj.name + "'s Shop",
+          description: "",
+          subpage: "shop-" + generateUID(),
+          background: "0,0,100",
+        }).then((shopData) => {
+          navigate("/" + shopData.subpage + "/admin");
+        });
+      }
     });
-
-
   };
 
   const onFailure = (res) => {
     console.log("Login Failed: ", res);
-
   };
 
   return (
