@@ -13,8 +13,8 @@
 ActiveRecord::Schema[7.0].define(version: 2022_07_26_122828) do
   create_table "orders", force: :cascade do |t|
     t.string "email"
-    t.string "shippingAddress"
-    t.string "productTitle"
+    t.string "shipping_address"
+    t.integer "product_id"
     t.string "status"
     t.float "price"
     t.integer "quantity"
