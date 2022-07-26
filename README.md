@@ -54,16 +54,16 @@ Database: MySQL
  
 ## Method of Deployment
 
-We will deploy our application on Google Cloud. Since we use a Ruby on Rails backend, we will configure an environment to deploy on Google Cloud and utilize their $300 free trial in credits to host our application. Other 3rd party services such as our payments will also be used in conjunction.
+We have deployed our application on DigitalOcean. Since we use a Ruby on Rails backend, we will configure an environment on DigitalOcean to create a docker image for our Rails API and utilize their $100 free trial in credits to host our application. Other 3rd party services such as our payments will also be used in conjunction.
 
 We have listed the following resources to help guide us through the deployment process:
 
-[(1) Deploy Ruby On Rails On Google Cloud - YouTube](https://www.youtube.com/watch?v=3d7xBvmu6Z4)<br>
-[Running Rails on Google Cloud | Ruby](https://cloud.google.com/ruby/rails)
+https://www.youtube.com/watch?v=ZKi8AfKzfWY
 
 We will follow the steps:
-1. Sign up for Google Cloud, create a project, use the $300 in free credits
-2. Set up GCP App Engine, configuring app.yaml (the configuration for the packages, libraries, dependencies used by Ruby on Rails and React
-3. Set up Cloud SQL for our database, get secret keys and connect to application
+1. Sign up for DigitalOcean, create a project, use the $100 in free credits
+2. Set up a new App, configuring Rails application docker image through DigitalOcean automatically
+3. DigitalOcean will create the VPS (virtual private server), docker image, and container itself
 4. Deploy the app!
-5. Register a domain and point the DNS address of domain to Google Cloud specific one
+5. Register a domain and point the DNS address of domain to DigitalOcean.
+6. Repeat the process for our React frontend
