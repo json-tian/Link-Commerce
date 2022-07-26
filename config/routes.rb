@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :orders
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -8,6 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :shops do
         resources :products
+        resources :orders
       end
       # get 'register', to: 'users/sessions#new'
       # post 'sign_in', to: 'users/sessions#create'
