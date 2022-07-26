@@ -48,13 +48,13 @@ Frontend: React
 
 Backend: Ruby on Rails API only
 
-Cloud: Deploy on Google Cloud, Firebase Storage for image storage, Stripe Google Pay integration
+Cloud: Deploy on DigitalOcean, Firebase Storage for image storage, Stripe Google Pay integration
 
 Database: MySQL
  
 ## Method of Deployment
 
-We have deployed our application on DigitalOcean. Since we use a Ruby on Rails backend, we will configure an environment on DigitalOcean to create a docker image for our Rails API and utilize their $100 free trial in credits to host our application. Other 3rd party services such as our payments will also be used in conjunction.
+We have deployed our application on DigitalOcean. Since we use a Ruby on Rails backend, we will configure an environment on DigitalOcean to create a docker image for our Rails API and utilize their $100 free trial in credits to host our application. We will deploy our React frontend in a similar way. Other 3rd party services such as our payments will also be used in conjunction.
 
 We have listed the following resources to help guide us through the deployment process:
 
