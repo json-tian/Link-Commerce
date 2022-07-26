@@ -22,8 +22,9 @@ function App() {
             scope: "",
           })
           .then(() => {
-            // gapi.auth2.getAuthInstance().signIn();
-            setUser(gapi.auth2.getAuthInstance().currentUser.get().wt.cu);
+            try {
+              setUser(gapi.auth2.getAuthInstance().currentUser.get().wt.cu);
+            } catch (e) {}
           });
       },
       []

@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import {
-  addApiData,
+  postApiData,
   deleteApiData,
   getApiData,
   patchApiData,
@@ -102,7 +102,7 @@ function Admin({ user }) {
 
   // remember to do input sanitization later
   const handleAddProduct = () => {
-    addApiData("shops/" + shopData.id + "/products", {
+    postApiData("shops/" + shopData.id + "/products", {
       title: addProductName,
       description: addProductDescription,
       image: "",
@@ -110,13 +110,15 @@ function Admin({ user }) {
       quantity: parseInt(addProductQuantity),
       sold: 0,
       shop_id: shopData.id,
+    }).then((response) => {
+      refreshPage();
     });
-    refreshPage();
   };
 
   const handleDeleteProduct = (url) => {
-    deleteApiData(url);
-    refreshPage();
+    deleteApiData(url).then((response) => {
+      refreshPage();
+    });
   };
 
   useEffect(() => {
@@ -221,18 +223,18 @@ function Admin({ user }) {
       <DisplayText size="large">Store Details:</DisplayText>
       <EditSaveTextField
         label="Shop Name"
-        initialValue={shopData.name}
+        initialValue={shopData.name ? shopData.name : ""}
         apiHandler={saveShopName}
         callback={shopNameCallback}
       />
       <EditSaveTextField
         label="Shop Description"
-        initialValue={shopData.description}
+        initialValue={shopData.description ? shopData.description : ""}
         apiHandler={saveShopDescription}
       />
       <EditSaveTextField
         label="Shop Subpage"
-        initialValue={shopData.subpage}
+        initialValue={shopData.subpage ? shopData.subpage : ""}
         apiHandler={saveShopSubpage}
         callback={subpageCallback}
       />
